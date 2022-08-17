@@ -1,0 +1,24 @@
+import telnetlib
+host = ["192.168.100.10","192.168.100.20","192.168.100.30"]
+password = "123"
+for i in host:
+    t = telnetlib.Telnet(i)
+    t.read_until(b"Password:")
+    t.write(password.encode("ascii") + b"\n")
+    t.read_until(b">")
+    t.write("copy vrpcfg.zip {}.zip".format(i).encode("ascii") + b"\n")
+    t.read_until(b"Copy").decode("ascii")
+    t.write("y".encode("ascii") + b"\n")
+    t.read_until(b"Done").decode("ascii")
+    print(i+"复制成功")
+    t.write("tftp 192.168.100.1 put {}.zip".format(i).encode("ascii") + b"\n")
+    t.read_until(b"successfully").decode("ascii")
+    print(i+"完成备份")
+    t.write("delete {}.zip".format(i).encode("ascii") + b"\n")
+    t.read_until(b"Delete").decode("ascii")
+    t.write("y".encode("ascii") + b"\n")
+    t.read_until(b"succeed").decode("ascii")
+    print(i+"删除设备的复制文件")
+    t.close()
+    print(i + "关闭链接")
+print("全部完成")
