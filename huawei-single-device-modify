@@ -1,3 +1,4 @@
+首先要桥接设备，详细可以看这里https://www.jianshu.com/p/ec39c51a55fa
 import telnetlib 
 host ="192.168.1.10"  
 password = "huawei123" 
